@@ -1,0 +1,161 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Emploi du temps GB1</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <!--<link rel="stylesheet" href="css/premain.css">-->
+		<link rel="stylesheet" href="css/main.css">
+		<!--<link rel="stylesheet" href="css/postmain.css">-->
+		<script src="vendor/modernizr-2.8.3.min.js"></script>
+		
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">Vous utilisez un navigateur <strong>périmé</strong>. Merci de <a href="http://browsehappy.com/">mettre à jour votre navigateur</a> pour améliorer votre expérience sur Internet.</p>
+        <![endif]-->
+
+<div class="no-print">
+  <span class="filter">
+    <input placeholder="Matière" type="text" id="courseFilter">
+	<span class="clear">&times;</span>
+  </span>
+  <span class="filter">
+	<input placeholder="Enseignant" type="text" id="teacherFilter">
+	<span class="clear">&times;</span>
+  </span>
+</div>
+<div class="no-print">
+  <button class="btn btn-dir" id="previousWeek">‹</button>
+  <button class="btn" id="today">aujourd'hui</button>
+  <button class="btn btn-dir" id="nextWeek">›</button>
+  
+  <span id="week"></span>
+</div>
+<table id="schedule">
+<colgroup>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+  <col>
+</colgroup>
+<thead>
+<tr class="hours">
+  <th></th>
+  <th>8h</th>
+  <th>9h</th>
+  <th>10h</th>
+  <th>11h</th>
+  <th>12h</th>
+  <th>13h</th>
+  <th>14h</th>
+  <th>15h</th>
+  <th>16h</th>
+  <th>17h</th>
+  <th>18h<span style="float: right;">19h</span></th>
+</tr>
+</thead>
+<tbody>
+<tr id="d1" class="day">
+  <th><div class="rotate"><div></div></div></th>
+  <td class="h8"></td>
+  <td class="h9"></td>
+  <td class="h10"></td>
+  <td class="h11"></td>
+  <td class="h12"></td>
+  <td class="h13"></td>
+  <td class="h14"></td>
+  <td class="h15"></td>
+  <td class="h16"></td>
+  <td class="h17"></td>
+  <td class="h18"></td>
+</tr>
+<tr id="d2" class="day">
+  <th><div class="rotate"><div></div></div></th>
+  <td class="h8"></td>
+  <td class="h9"></td>
+  <td class="h10"></td>
+  <td class="h11"></td>
+  <td class="h12"></td>
+  <td class="h13"></td>
+  <td class="h14"></td>
+  <td class="h15"></td>
+  <td class="h16"></td>
+  <td class="h17"></td>
+  <td class="h18"></td>
+</tr>
+<tr id="d3" class="day">
+  <th><div class="rotate"><div></div></div></th>
+  <td class="h8"></td>
+  <td class="h9"></td>
+  <td class="h10"></td>
+  <td class="h11"></td>
+  <td class="h12"></td>
+  <td class="h13"></td>
+  <td class="h14"></td>
+  <td class="h15"></td>
+  <td class="h16"></td>
+  <td class="h17"></td>
+  <td class="h18"></td>
+</tr>
+<tr id="d4" class="day">
+  <th><div class="rotate"><div></div></div></th>
+  <td class="h8"></td>
+  <td class="h9"></td>
+  <td class="h10"></td>
+  <td class="h11"></td>
+  <td class="h12"></td>
+  <td class="h13"></td>
+  <td class="h14"></td>
+  <td class="h15"></td>
+  <td class="h16"></td>
+  <td class="h17"></td>
+  <td class="h18"></td>
+</tr>
+<tr id="d5" class="day">
+  <th><div class="rotate"><div></div></div></th>
+  <td class="h8"></td>
+  <td class="h9"></td>
+  <td class="h10"></td>
+  <td class="h11"></td>
+  <td class="h12"></td>
+  <td class="h13"></td>
+  <td class="h14"></td>
+  <td class="h15"></td>
+  <td class="h16"></td>
+  <td class="h17"></td>
+  <td class="h18"></td>
+</tr>
+</tbody>
+</table>
+
+<script id="lessonTemplate" type="x-tmpl-mustache">
+<div class="lesson {{ type }}" style="width: {{ width }}%; height: {{ height }}%; top: {{ top }}%; left: {{ left}}%;">
+<div><span class="course">{{ title }}</span><span style="float: right;">{{ room }}</span></div>
+<div><span class="teacher">{{ teacher }}</span><span style="float: right;">{{ group }}</span></div>
+</div>
+</script>
+
+<script src="vendor/jquery-2.1.3.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="vendor/mustache.min.js"></script>
+<script src="vendor/js.cookie.js"></script>
+<script src="js/date.js"></script>
+<script src="js/HPweb.js"></script>
+
+    </body>
+</html>
