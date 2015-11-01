@@ -30,13 +30,23 @@
 	<input placeholder="Enseignant" type="text" id="teacherFilter">
 	<span class="clear">&times;</span>
   </span>
-</div>
+  <span id="classes">
+    <input type="radio" id="GB" data-name="all" name="classes" checked><label for="GB">Tous</label>
+    <input type="radio" id="GB1" data-name="GB1" name="classes"><label for="GB1">GB1</label>
+	<input type="radio" id="ABB2" data-name="ABB2" name="classes"><label for="ABB2">ABB2</label>
+	<input type="radio" id="AGRO2" data-name="AGRO2" name="classes"><label for="AGRO2">AGRO2</label>
+	<input type="radio" id="GE2" data-name="GE2" name="classes"><label for="GE2">GE2</label>
+  </span>
+  </div>
 <div class="no-print">
+  <!--<button class="btn btn-dir" id="previousMonth">«</button>-->
   <button class="btn btn-dir" id="previousWeek">‹</button>
   <button class="btn" id="today">aujourd'hui</button>
   <button class="btn btn-dir" id="nextWeek">›</button>
-  
-  <span id="week"></span>
+  <!--<button class="btn btn-dir" id="nextMonth">»</button>-->
+</div>
+<div>
+    <h1 id="week">Semaine n° <span id="weekNumber"></span></h1>
 </div>
 <table id="schedule">
 <colgroup>
@@ -54,108 +64,123 @@
   <col>
 </colgroup>
 <thead>
-<tr class="hours">
-  <th></th>
-  <th>8h</th>
-  <th>9h</th>
-  <th>10h</th>
-  <th>11h</th>
-  <th>12h</th>
-  <th>13h</th>
-  <th>14h</th>
-  <th>15h</th>
-  <th>16h</th>
-  <th>17h</th>
-  <th>18h<span style="float: right;">19h</span></th>
+<tr>
+  <th class="day hour"></th>
+  <th class="hour">8h</th>
+  <th class="hour">9h</th>
+  <th class="hour">10h</th>
+  <th class="hour">11h</th>
+  <th class="hour">12h</th>
+  <th class="hour">13h</th>
+  <th class="hour">14h</th>
+  <th class="hour">15h</th>
+  <th class="hour">16h</th>
+  <th class="hour">17h</th>
+  <th class="hour">18h<span style="float: right;">19h</span></th>
 </tr>
 </thead>
 <tbody>
-<tr id="d1" class="day">
-  <th><div class="rotate"><div></div></div></th>
-  <td class="h8"></td>
-  <td class="h9"></td>
-  <td class="h10"></td>
-  <td class="h11"></td>
-  <td class="h12"></td>
-  <td class="h13"></td>
-  <td class="h14"></td>
-  <td class="h15"></td>
-  <td class="h16"></td>
-  <td class="h17"></td>
-  <td class="h18"></td>
+<tr id="d1">
+  <th class="day"><div class="rotate"><div></div></div></th>
+  <td id="d1h8"></td>
+  <td id="d1h9"></td>
+  <td id="d1h10"></td>
+  <td id="d1h11"></td>
+  <td id="d1h12"></td>
+  <td id="d1h13"></td>
+  <td id="d1h14"></td>
+  <td id="d1h15"></td>
+  <td id="d1h16"></td>
+  <td id="d1h17"></td>
+  <td id="d1h18"></td>
 </tr>
-<tr id="d2" class="day">
-  <th><div class="rotate"><div></div></div></th>
-  <td class="h8"></td>
-  <td class="h9"></td>
-  <td class="h10"></td>
-  <td class="h11"></td>
-  <td class="h12"></td>
-  <td class="h13"></td>
-  <td class="h14"></td>
-  <td class="h15"></td>
-  <td class="h16"></td>
-  <td class="h17"></td>
-  <td class="h18"></td>
+<tr id="d2">
+  <th class="day"><div class="rotate"><div></div></div></th>
+  <td id="d2h8"></td>
+  <td id="d2h9"></td>
+  <td id="d2h10"></td>
+  <td id="d2h11"></td>
+  <td id="d2h12"></td>
+  <td id="d2h13"></td>
+  <td id="d2h14"></td>
+  <td id="d2h15"></td>
+  <td id="d2h16"></td>
+  <td id="d2h17"></td>
+  <td id="d2h18"></td>
 </tr>
-<tr id="d3" class="day">
-  <th><div class="rotate"><div></div></div></th>
-  <td class="h8"></td>
-  <td class="h9"></td>
-  <td class="h10"></td>
-  <td class="h11"></td>
-  <td class="h12"></td>
-  <td class="h13"></td>
-  <td class="h14"></td>
-  <td class="h15"></td>
-  <td class="h16"></td>
-  <td class="h17"></td>
-  <td class="h18"></td>
+<tr id="d3">
+  <th class="day"><div class="rotate"><div></div></div></th>
+  <td id="d3h8"></td>
+  <td id="d3h9"></td>
+  <td id="d3h10"></td>
+  <td id="d3h11"></td>
+  <td id="d3h12"></td>
+  <td id="d3h13"></td>
+  <td id="d3h14"></td>
+  <td id="d3h15"></td>
+  <td id="d3h16"></td>
+  <td id="d3h17"></td>
+  <td id="d3h18"></td>
 </tr>
-<tr id="d4" class="day">
-  <th><div class="rotate"><div></div></div></th>
-  <td class="h8"></td>
-  <td class="h9"></td>
-  <td class="h10"></td>
-  <td class="h11"></td>
-  <td class="h12"></td>
-  <td class="h13"></td>
-  <td class="h14"></td>
-  <td class="h15"></td>
-  <td class="h16"></td>
-  <td class="h17"></td>
-  <td class="h18"></td>
+<tr id="d4">
+  <th class="day"><div class="rotate"><div></div></div></th>
+  <td id="d4h8"></td>
+  <td id="d4h9"></td>
+  <td id="d4h10"></td>
+  <td id="d4h11"></td>
+  <td id="d4h12"></td>
+  <td id="d4h13"></td>
+  <td id="d4h14"></td>
+  <td id="d4h15"></td>
+  <td id="d4h16"></td>
+  <td id="d4h17"></td>
+  <td id="d4h18"></td>
 </tr>
-<tr id="d5" class="day">
-  <th><div class="rotate"><div></div></div></th>
-  <td class="h8"></td>
-  <td class="h9"></td>
-  <td class="h10"></td>
-  <td class="h11"></td>
-  <td class="h12"></td>
-  <td class="h13"></td>
-  <td class="h14"></td>
-  <td class="h15"></td>
-  <td class="h16"></td>
-  <td class="h17"></td>
-  <td class="h18"></td>
+<tr id="d5">
+  <th class="day"><div class="rotate"><div></div></div></th>
+  <td id="d5h8"></td>
+  <td id="d5h9"></td>
+  <td id="d5h10"></td>
+  <td id="d5h11"></td>
+  <td id="d5h12"></td>
+  <td id="d5h13"></td>
+  <td id="d5h14"></td>
+  <td id="d5h15"></td>
+  <td id="d5h16"></td>
+  <td id="d5h17"></td>
+  <td id="d5h18"></td>
 </tr>
 </tbody>
 </table>
 
+<div>
+    <span id="lastModified"></span>
+</div>
+
 <script id="lessonTemplate" type="x-tmpl-mustache">
-<div class="lesson {{ type }}" style="width: {{ width }}%; height: {{ height }}%; top: {{ top }}%; left: {{ left}}%;">
+<div class="lesson {{ type }} t{{ top}} h{{ height }}" style="left: {{ left}}%; width: {{ width }}%;">
 <div><span class="course">{{ title }}</span><span style="float: right;">{{ room }}</span></div>
-<div><span class="teacher">{{ teacher }}</span><span style="float: right;">{{ group }}</span></div>
+<div><span class="teacher">{{{ teacher }}}</span><span style="float: right;">{{ group }}</span></div>
 </div>
 </script>
 
 <script src="vendor/jquery-2.1.3.min.js"></script>
-<script src="js/plugins.js"></script>
 <script src="vendor/mustache.min.js"></script>
-<script src="vendor/js.cookie.js"></script>
+<!--<script src="vendor/js.cookie.js"></script>-->
+<!--<script src="vendor/moment.min.js"></script>-->
+<script src="vendor/papaparse.min.js"></script>
+
+<script>
+    var UP = UP || {};
+
+    UP.fileURL = './cours_all.txt';
+</script>
+
 <script src="js/date.js"></script>
-<script src="js/HPweb.js"></script>
+<script src="js/dom.js"></script>
+<script src="js/parser.js"></script>
+<script src="js/ultra.js"></script>
+<!--<script src="js/HPweb.js"></script>-->
 
     </body>
 </html>

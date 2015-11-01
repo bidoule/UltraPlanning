@@ -9,6 +9,7 @@ body {
 table {
   width: 100%;
   min-width: 1000px;
+  height: 100%;
 }
 
 col {
@@ -20,18 +21,25 @@ col:nth-child(1) {
   width: 1%;
 }
 
+#week {
+    text-align: center;
+}
+
+#lastModified {
+    float: right;
+    margin-top: 5px;
+    font-size: 10pt;
+}
+
 thead th {
   text-align: left;
   padding: 2px 5px;
 }
 
-tbody tr {
-  height: 18em;
-}
 
 td {
   border: 1px solid #ddd;
-  height: 100px;
+  height: 18em;
   min-width: 120px;
   position: relative;
 }
@@ -41,12 +49,19 @@ th {
   position: relative;
 }
 
+th.hour  {
+  border-top-width: 0;
+}
+th.day {
+  border-left-width: 0;
+}
+
 .rotate {
   width: 2em;
   line-height: 2em;
 }
 
-.rotate > * {
+.rotate > div {
   white-space: nowrap;
   display: inline-block;
   
@@ -115,6 +130,35 @@ input[type="text"] {
   padding: 3px;
   /*transition: border 0.3s;*/
 }
+
+input[type="radio"],
+input[type="checkbox"] {
+	display: none;
+}
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px;
+  border: solid 2px #ddd;
+  width: 100px;
+  display: inline-block;
+  text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input[type="radio"]:checked + label,
+input[type="checkbox"]:checked + label {
+	border-color:  #3498db;
+	color: #3498db;
+}
+
 input[type="text"]:focus,
 input[type="text"].focus {
   /*border-bottom: solid 2px #1f628d;*/
@@ -185,4 +229,66 @@ input[type="text"].focus {
   .no-print {
     display: none;
   }
+  
+  body {
+	  width: 297mm;
+	  height: 200mm;
+  }
+  
+  td {
+    min-width: 60px;
+	height: 30mm;
+  }
+  
+  .lesson {
+	  font-size: 5pt;
+	  line-height: 5pt;
+  }
+  
+}
+
+.t0 { top: 0%; }
+.t1 { top: 11.11%; }
+.t2 { top: 22.22%; }
+.t3 { top: 33.33%; }
+.t4 { top: 44.44%; }
+.t5 { top: 55.55%; }
+.t6 { top: 66.66%; }
+.t7 { top: 77.77%; }
+.t8 { top: 88.88%; }
+
+.h1 { height: 11.11%; }
+.h2 { height: 22.22%; }
+.h3 { height: 33.33%; }
+.h4 { height: 44.44%; }
+.h5 { height: 55.55%; }
+.h6 { height: 66.66%; }
+.h7 { height: 77.77%; }
+.h8 { height: 88.88%; }
+.h9 { height: 99.99%; }
+
+.full .t0,
+.full .t1,
+.full .t2,
+.full .t3,
+.full .t4,
+.full .t5,
+.full .t6,
+.full .t7,
+.full .t8,
+.full .h1,
+.full .h2,
+.full .h3,
+.full .h4,
+.full .h5,
+.full .h6,
+.full .h7,
+.full .h8,
+.full .h9 {
+	top: 0%;
+	height: 99.99%;
+}
+
+.full td {
+	height: 8em;
 }

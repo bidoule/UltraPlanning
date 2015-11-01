@@ -4,8 +4,17 @@ var HPweb = HPweb || {};
 
 HPweb.events = {};
 HPweb.monday = null;
-HPweb.teacherFilter = new RegExp('', 'i');
-HPweb.courseFilter = new RegExp('', 'i');
+
+HPweb.filters = {
+	course: {
+		input: $('#courseFilter'),
+		regexp: new RegExp('', 'i')
+	},
+	teacher: {
+		input: $('#teacherFilter'),
+		regexp: new RegExp('', 'i')
+	}
+}
 
 HPweb.readEvents = function(file) {
 	$('body').css('cursor', 'wait');
@@ -17,17 +26,18 @@ HPweb.readEvents = function(file) {
 };
 
 HPweb.loadEvents = function (txt, status, xhr) {
+	var t = new Date();
 	txt.slice(0,-1).split('\n').forEach(function (row, idx) {
 		HPweb.parseLine(row, idx);
 	});
-	HPweb.today();
+	console.log(new Date() - t);
 };
 
 HPweb.parseLine = function(line, idx) {
 	var row = line.trim().split(';');
 
 	if (row[0] === '' || row[1] === '' || row[2] === '' || row[3] === '' || !(row[5] in HPweb.groupConfig)) {
-		console.log('Erreur ligne ' + idx.toString() + ' : ' + row);
+		//console.log('Erreur ligne ' + idx.toString() + ' : ' + row);
 		return;
 	}
 
@@ -103,7 +113,7 @@ HPweb.Event = function(row) {
 	this.width = (this.end - this.start) / 36000;
 	
 	this.show = function () {
-		if (HPweb.courseFilter.test(this.title) && HPweb.teacherFilter.test(this.teachers))
+		if (HPweb.filters.course.regexp.test(this.title) && HPweb.filters.teacher.regexp.test(this.teachers))
 			this.targetCell.append(Mustache.render(HPweb.$template, this));
 	};
 };
@@ -156,63 +166,68 @@ HPweb.setDays = function(year, month, day) {
 	$('.rotate > *').each(function (idx, elt) {
 		var date = fromIsoCalendarDate(year, month, day + idx);
 		elt.textContent = date.shortFormat();
-		var dateArray = date.getIsoCalendarDate();
+	});
+	var monday = '' + year + '-' + month.pad() + '-' + day.pad();
+	console.log(monday);
+	if (monday in UP.events) {
+		console.log('YES !');
+		var evs = UP.events[monday];
+		for (var i=0; i<evs.length; ++i) {
+			evs[i].show();
+		}
+	}
+	/*	var dateArray = date.getIsoCalendarDate();
 		if (dateArray in HPweb.events) {
 			var evs = HPweb.events[dateArray];
 			for (var i=0; i<evs.length; ++i) {
 				evs[i].show();
 			}
 		}
-	});
+	});*/
+};
+
+HPweb.updateStateFilter = function(name) {
+	var value = HPweb.filters[name].input.val();
+	HPweb.filters[name].regexp = new RegExp(value, 'i');
+};
+
+HPweb.updateState = function() {
+	HPweb.updateStateFilter('course');
+	HPweb.updateStateFilter('teacher');
 };
 
 HPweb.resetUI = function() {
 	$('body').css('cursor', 'wait');
 	$('.lesson').remove();
 	var a = HPweb.monday.toIsoMonday();
-	HPweb.courseFilter = new RegExp($('#courseFilter').val(), 'i');
-	Cookies.set('course', $('#courseFilter').val(), { expires: 365 });
-	HPweb.teacherFilter = new RegExp($('#teacherFilter').val(), 'i');
-	Cookies.set('teacher', $('#teacherFilter').val(), { expires: 365 });
+	HPweb.updateState();
 	HPweb.setDays(a[0], a[1], a[2]);
 	$('#week').text(HPweb.monday.weekFormat());
 	$('body').css('cursor', 'auto');
 };
 
-HPweb.cleanParams = function () {
-	var search = window.location.search;
-	return search.replace(/^\?*/, '').replace(/\/*$/, '');
-};
 
-HPweb.urlParam = HPweb.cleanParams();
-
-console.log(HPweb.urlParam);
 
 $(document).on('click', '.clear', function() {
-	var $prev = $(this).prev();
-	if ($prev.val() !== '') {
-		$prev.val('');
+	var $input = $(this).parent().find('input');
+	if ($input.val() !== '') {
+		$input.val('');
+	}
+});
+
+HPweb.clickFilter = function (name) {
+	return function () {
+		if (HPweb.filters[name].input.val() == this.textContent) {
+			HPweb.filters[name].input.val('');
+		} else {
+			HPweb.filters[name].input.val(this.textContent);
+		}
 		HPweb.resetUI();
-	}
-});
+	};
+}
 
-$(document).on('click', '.course', function() {
-	if ($('#courseFilter').val() == this.textContent) {
-		$('#courseFilter').val('');
-	} else {
-		$('#courseFilter').val(this.textContent);
-	}
-	HPweb.resetUI();
-});
-
-$(document).on('click', '.teacher', function() {
-	if ($('#teacherFilter').val() == this.textContent) {
-		$('#teacherFilter').val('');
-	} else {
-		$('#teacherFilter').val(this.textContent);
-	}
-	HPweb.resetUI();
-});
+$(document).on('click', '.course', HPweb.clickFilter('course'));
+$(document).on('click', '.teacher', HPweb.clickFilter('teacher'));
 
 HPweb.previousWeek = function () {
 	HPweb.monday = HPweb.monday.previousWeek();
@@ -229,19 +244,51 @@ HPweb.nextWeek = function () {
 	HPweb.resetUI();
 };
 
+HPweb.initURLParams = function () {
+	var params = window.location.search.slice(1).split('&');
+	for (var i=0; i<params.length; ++i) {
+		var param = params[i].split('=');
+		if (param.length > 1) {
+			if (param[0] in HPweb.filters) {
+				HPweb.filters[param[0]].input.val(decodeURIComponent(param[1]));
+			} else if (param[0] == "week") {
+				HPweb.monday = parseISOWeek(param[1]);
+			}
+		}
+	}
+};
+
+HPweb.initUI = function() {
+	HPweb.monday = (new Date()).toMonday();
+	HPweb.initURLParams();
+	HPweb.resetUI();
+}
+
+HPweb.addURLParam = function(params, name, value) {
+		params.push(name + '=' + encodeURIComponent(value));
+	if (value) {
+	}
+}
+
+HPweb.addURLFilter = function(params, name) {
+	HPweb.addURLParam(params, name, HPweb.filters[name].input.val());
+}
+
+HPweb.getURLLink = function() {
+	var URLParams = [];
+	var ISOMonday = HPweb.monday.getIsoWeekDate();
+	HPweb.addURLParam(URLParams, 'week', ISOMonday[0] + '-W' + ISOMonday[1].pad(2));
+	HPweb.addURLFilter(URLParams, 'course');
+	HPweb.addURLFilter(URLParams, 'teacher');
+	var URLParams = 
+	$('#URLLink').val(location.origin + location.pathname + '?' + URLParams.join('&'));
+}
 
 $('#previousWeek').click(HPweb.previousWeek);
 $('#today').click(HPweb.today);
 $('#nextWeek').click(HPweb.nextWeek);
 $('#courseFilter').change(HPweb.resetUI);
 $('#teacherFilter').change(HPweb.resetUI);
+$('#getURLLink').click(HPweb.getURLLink);
 
-
-var courseCookie = Cookies.get('course');
-if (courseCookie != undefined) {
-	$('#courseFilter').val(courseCookie);
-}
-var teacherCookie = Cookies.get('teacher');
-if (teacherCookie != undefined) {
-	$('#teacherFilter').val(teacherCookie);
-}
+HPweb.initUI();
