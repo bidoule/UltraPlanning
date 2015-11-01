@@ -22,6 +22,7 @@ UP.initDays = function() {
 };
 
 UP.currentMonday = nextMonday();
+UP.initialMonday = nextMonday();
 
 UP.showDays = function() {
 	UP.days[0].textContent = UP.currentMonday.shortFormat();

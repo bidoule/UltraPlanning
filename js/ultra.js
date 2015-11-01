@@ -59,6 +59,8 @@ UP.showSchedule = function() {
 	if (monday in UP.events) {
 		UP.events[monday].forEach(UP.showLesson);
 	}
+    UP.updateURLParams();
+    console.log("SHOW");
 }
 
 UP.initURLParams = function () {
@@ -76,13 +78,34 @@ UP.initURLParams = function () {
 				$('#schedule').addClass('full');
 			} else if (param[0] == "week") {
 				UP.currentMonday = parseISOWeek(value).toMonday();
+			} else if (param[0] == "class") {
+                $('#classes input').prop('checked', false);
+                $('#' + value).prop('checked', true);
+				UP.classes = value;
+
 			}
 		}
 	}
 };
 
 UP.updateURLParams = function () {
-	
+    var vars = [];
+    var teacher = UP.teacherInput.val();
+    if (teacher != "") {
+        vars.push("teacher=" + encodeURIComponent(teacher));
+    }
+    var course = UP.courseInput.val();
+    if (course != "") {
+        vars.push("course=" + encodeURIComponent(course));
+    }
+    if (UP.classes != "all") {
+        vars.push("class=" + encodeURIComponent(UP.classes));
+    }
+    if (UP.currentMonday.getTime() != UP.initialMonday.getTime()) {
+        vars.push("week=" + UP.currentMonday.ISOWeekFormat());
+    }
+    history.replaceState(null, null, "/" + ((vars.length > 0) ? "?" : "") + vars.join("&"));
+
 }
 
 UP.showDateFile = function(text, status, xhr) {

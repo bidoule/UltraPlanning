@@ -59,13 +59,9 @@ UP.parse = function() {
 		newline: "\r\n",
 		download: true,
 		fastMode: true,
-        before: function(a, b, c) {
-            console.log('YEAH', a, b, c);
-        },
 		complete: function(results, file) {
 			results.data.forEach(UP.parseEvent);
 			UP.showSchedule();
-            console.log('FILE', file);
 		}
 	});
 };
@@ -91,7 +87,7 @@ UP.parseEvent = function(row) {
 		++errors;
 	}
 	if (!(row[5] in UP.groupConfig)) {
-		console.log("Groupe inconnu", row);
+		console.log('Groupe inconnu "' + row[5] + '"', row);
 		++errors;
 	}
 	if (errors > 0)
@@ -192,25 +188,25 @@ UP.groupConfig = {
 	'GB ABB2': [0,9,'ABB2'],
 	'GB GE2': [0,9,'GE2'],
 	
-	'<TD GE2> TD A': [0,1,'GE2'],
-	'<TD GE2> TD B': [1,1,'GE2'],
+	'<TD GE2> TD A': [0,3,'GE2'],
+	'<TD GE2> TD B': [3,3,'GE2'],
 	
-	'<TP GE2> TP 1': [0,1,'GE2'],
-	'<TP GE2> TP 2': [1,1,'GE2'],
-	'<TP GE2> TP 3': [2,1,'GE2'],
+	'<TP GE2> TP 1': [0,2,'GE2'],
+	'<TP GE2> TP 2': [2,2,'GE2'],
+	'<TP GE2> TP 3': [4,2,'GE2'],
 	
-	'<TP ABB2> TP 1': [0,1,'ABB2'],
-	'<TP ABB2> TP 2': [1,1,'ABB2'],
-	'<TP ABB2> TP 3': [2,1,'ABB2'],
-	'<TP ABB2> TP 4': [3,1,'ABB2'],
+	'<TP ABB2> TP 1': [0,2,'ABB2'],
+	'<TP ABB2> TP 2': [2,2,'ABB2'],
+	'<TP ABB2> TP 3': [4,2,'ABB2'],
+	'<TP ABB2> TP 4': [6,2,'ABB2'],
 	
-	'<TD ABB2> TD 1-2': [0,2,'ABB2'],
-	'<TD ABB2> TD 3-4': [2,1,'ABB2'],
+	'<TD ABB2> TD 1-2': [0,4,'ABB2'],
+	'<TD ABB2> TD 3-4': [4,4,'ABB2'],
 
-	'<TD AGRO2> AGRO': [0,1,'AGRO2'],
+	'<TD AGRO2> AGRO': [0,4,'AGRO2'],
 	
-	'<TP AGRO2> TP 1': [0,1,'AGRO2'],
-	'<TP AGRO2> TP 2': [1,1,'AGRO2'],
+	'<TP AGRO2> TP 1': [0,2,'AGRO2'],
+	'<TP AGRO2> TP 2': [2,2,'AGRO2'],
 	
 };
 

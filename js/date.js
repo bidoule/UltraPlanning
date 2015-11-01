@@ -1,6 +1,6 @@
 'use strict';
 
-Date.prototype.days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+Date.prototype.days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 Date.prototype.months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
 
 Number.prototype.pad = function() {
@@ -26,6 +26,11 @@ Date.prototype.ISOFormat = function() {
 Date.prototype.weekFormat = function () {
 	var iso = this.getISOWeekDate();
 	return '' + iso[0] + ' S' + iso[1];
+};
+
+Date.prototype.ISOWeekFormat = function () {
+	var iso = this.getISOWeekDate();
+	return '' + iso[0] + 'W' + iso[1];
 };
 
 Date.prototype.getISOCalendarDate = function() {
@@ -90,7 +95,7 @@ function parseISOWeekDate(s) {
 	}
 }
 
-var ISOWeekPattern = /(\d{4})-W(\d{2})/;
+var ISOWeekPattern = /(\d{4})W(\d{2})/;
 function parseISOWeek(s) {
 	var match = ISOWeekPattern.exec(s);
 	if (match) {

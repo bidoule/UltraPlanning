@@ -237,14 +237,42 @@ input[type="text"].focus {
   
   td {
     min-width: 60px;
-	height: 30mm;
+	height: 35mm;
+  }
+
+  h1 {
+      margin: 0;
+      font-size: 12pt;
   }
   
   .lesson {
-	  font-size: 5pt;
-	  line-height: 5pt;
+	  font-size: 10pt;
+	  line-height: 9pt;
   }
-  
+
+  .h1 .course {
+      margin-right: -1000px;
+  }
+
+  .lesson .teacher {
+      display: none;
+  }
+
+  .lesson.CM .teacher {
+      display: block;
+  }
+
+  .h1 > div > div {
+      display: inline-block;
+  }
+
+  .h1 .room:after {
+      content: " - ";
+  }
+
+  #lastModified {
+      font-size: 8pt;
+  }
 }
 
 .t0 { top: 0%; }
