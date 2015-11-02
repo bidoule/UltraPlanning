@@ -60,7 +60,6 @@ UP.showSchedule = function() {
 		UP.events[monday].forEach(UP.showLesson);
 	}
     UP.updateURLParams();
-    console.log("SHOW");
 }
 
 UP.initURLParams = function () {

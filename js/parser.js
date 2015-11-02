@@ -86,27 +86,28 @@ UP.parseEvent = function(row) {
 		//console.log("Pas d'heure de fin", row);
 		++errors;
 	}
-	if (!(row[5] in UP.groupConfig)) {
-		console.log('Groupe inconnu "' + row[5] + '"', row);
-		++errors;
-	}
 	if (errors > 0)
 		return;
-	
 	var day = UP.getDay(row[1]);
-	UP.addEvent(day.monday, new UP.Event(row, day.num));
+    row[5].split(', ').forEach(function (group) {
+        if (!(group in UP.groupConfig)) {
+            console.log('Groupe inconnu "' + group + '"', row);
+        } else {
+	        UP.addEvent(day.monday, new UP.Event(group, row, day.num));
+        }
+    });
 };
 
-UP.Event = function(row, day) {
+UP.Event = function(group, row, day) {
 	this.title = row[0];
 	this.type = row[4];
-	this.group = UP.parseGroup(row[5]);
+	this.group = UP.parseGroup(group);
 	this.room = row[6];
 	this.memo = row[7];
 	this.teachers = row[8].split(', ').map(UP.slice_after_space);
 	this.teacher = this.teachers.join('<br>');
 	
-	var position = UP.groupConfig[row[5]];
+	var position = UP.groupConfig[group];
 	this.classes = position[2];
 
 	var start = UP.parseTime(row[2]);

@@ -55,7 +55,9 @@ $('#nextWeek').click(UP.setNextWeek);
 UP.classes = 'all';
 
 UP.checkAllClasses = function () {
-	$('#GB').click();
+    UP.classes = 'all';
+    $("#classes input").prop('checked', false);
+	$('#GB').prop('checked', true);
 }
 
 $("#classes input").click(function () {
