@@ -232,17 +232,34 @@ input[type="text"].focus {
   
   body {
 	  width: 297mm;
-	  height: 200mm;
+	  height: 210mm;
+	  padding: 5mm;
   }
   
   td {
     min-width: 60px;
 	height: 35mm;
   }
+  
+  tr {
+	  height: 35mm;
+  }
+  
+  thead tr {
+	height: 5mm;
+  }
+  
+  thead th {
+	height: 5mm;
+	padding: 1mm;
+	font-size: 5pt;
+  }
 
   h1 {
       margin: 0;
       font-size: 12pt;
+	  height: 5mm;
+	  font-size: 10pt;
   }
   
   .lesson {
