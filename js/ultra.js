@@ -5,9 +5,11 @@ Mustache.parse(UP.$template);
 
 UP.courseInput = $('#courseFilter');
 UP.teacherInput = $('#teacherFilter');
+UP.roomInput = $('#roomFilter');
 
 UP.courseFilter = new RegExp('', 'i');
 UP.teacherFilter = new RegExp('', 'i');
+UP.roomFilter = new RegExp('', 'i');
 
 UP.updateCourseFilter = function () {
 	UP.courseFilter = new RegExp(UP.courseInput.val(), 'i');
@@ -19,9 +21,16 @@ UP.updateTeacherFilter = function () {
 	$('#schedule').toggleClass('full', !(UP.teacherInput.val() == ''));
 	UP.showSchedule();
 }
+UP.updateRoomFilter = function () {
+	UP.roomFilter = new RegExp(UP.roomInput.val(), 'i');
+	UP.checkAllClasses();
+	$('#schedule').toggleClass('full', !(UP.roomInput.val() == ''));
+	UP.showSchedule();
+}
 
 UP.courseInput.change(UP.updateCourseFilter);
 UP.teacherInput.change(UP.updateTeacherFilter);
+UP.roomInput.change(UP.updateRoomFilter);
 
 $('.filter').on('click', '.clear', function() {
 	var $input = $(this).parent().find('input');
@@ -47,6 +56,10 @@ $('#schedule').on('click', '.teacher', function() {
 	UP.updateTeacherFilter();
 });
 
+$('#schedule').on('click', '.room', function() {
+	UP.toggleFilter(UP.roomInput, this);
+	UP.updateRoomFilter();
+});
 
 UP.showLesson = function(lesson) {
 	lesson.show();
@@ -75,6 +88,10 @@ UP.initURLParams = function () {
 				UP.teacherInput.val(value);
 				UP.teacherFilter = new RegExp(value, 'i');
 				$('#schedule').addClass('full');
+			} else if (param[0] == "room") {
+				UP.roomInput.val(value);
+				UP.roomFilter = new RegExp(value, 'i');
+				$('#schedule').addClass('full');
 			} else if (param[0] == "week") {
 				UP.currentMonday = parseISOWeek(value).toMonday();
 			} else if (param[0] == "class") {
@@ -92,6 +109,10 @@ UP.updateURLParams = function () {
     var teacher = UP.teacherInput.val();
     if (teacher != "") {
         vars.push("teacher=" + encodeURIComponent(teacher));
+    }
+	var room = UP.roomInput.val();
+    if (room != "") {
+        vars.push("room=" + encodeURIComponent(room));
     }
     var course = UP.courseInput.val();
     if (course != "") {

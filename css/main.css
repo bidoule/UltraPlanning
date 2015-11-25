@@ -113,7 +113,7 @@ th.day {
 	z-index: 90;
 }
 
-.teacher:hover, .course:hover  {
+.teacher:hover, .course:hover , .room:hover {
 	text-decoration: underline;
 	cursor: pointer;
 }

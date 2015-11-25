@@ -124,6 +124,7 @@ UP.Event = function(group, row, day) {
 	this.show = function () {
 		if (UP.courseFilter.test(this.title) 
 			&& UP.teacherFilter.test(this.teachers) 
+			&& UP.roomFilter.test(this.room)
 		    && (UP.classes == 'all' || UP.classes == this.classes))
 			this.targetCell.append(Mustache.render(UP.$template, this));
 	};
