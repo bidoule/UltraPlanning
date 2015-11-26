@@ -32,6 +32,11 @@ UP.courseInput.change(UP.updateCourseFilter);
 UP.teacherInput.change(UP.updateTeacherFilter);
 UP.roomInput.change(UP.updateRoomFilter);
 
+UP.updateFilterInput = function(name, value) {
+	UP[name + 'Input'].val(value);
+	UP[name + 'Filter'] = new RegExp(value, 'i');
+}
+
 $('.filter').on('click', '.clear', function() {
 	var $input = $(this).parent().find('input');
 	if ($input.val() !== '') {
@@ -75,30 +80,33 @@ UP.showSchedule = function() {
     UP.updateURLParams();
 }
 
+UP.initValues = function() {
+	UP.currentMonday = nextMonday();
+	$('#schedule').removeClass('full');
+	UP.updateFilterInput('course', '');
+	UP.updateFilterInput('teacher', '');
+	UP.updateFilterInput('room', '');
+	$('#classes input').prop('checked', false);
+	$('#all').prop('checked', true);
+	UP.classes = 'all';
+}
+
 UP.initURLParams = function () {
 	var params = window.location.search.slice(1).split('&');
 	for (var i=0; i<params.length; ++i) {
 		var param = params[i].split('=');
 		var value = decodeURIComponent(param[1]);
 		if (param.length > 1) {
-			if (param[0] == "course") {
-				UP.courseInput.val(value);
-			    UP.courseFilter = new RegExp(value, 'i');
-		    } else if (param[0] == "teacher") {
-				UP.teacherInput.val(value);
-				UP.teacherFilter = new RegExp(value, 'i');
-				$('#schedule').addClass('full');
-			} else if (param[0] == "room") {
-				UP.roomInput.val(value);
-				UP.roomFilter = new RegExp(value, 'i');
-				$('#schedule').addClass('full');
+			if (["course", "teacher", "room"].indexOf(param[0]) >= 0) {
+				UP.updateFilterInput(param[0], value);
+				if (param[0] != "course")
+					$('#schedule').addClass('full');
 			} else if (param[0] == "week") {
 				UP.currentMonday = parseISOWeek(value).toMonday();
 			} else if (param[0] == "class") {
                 $('#classes input').prop('checked', false);
                 $('#' + value).prop('checked', true);
 				UP.classes = value;
-
 			}
 		}
 	}
@@ -124,9 +132,20 @@ UP.updateURLParams = function () {
     if (UP.currentMonday.getTime() != UP.initialMonday.getTime()) {
         vars.push("week=" + UP.currentMonday.ISOWeekFormat());
     }
-    history.replaceState(null, null, "/" + ((vars.length > 0) ? "?" : "") + vars.join("&"));
-
+    history.pushState(null, null, "?" + vars.join("&"));
 }
+
+window.onpopstate = function(event) {
+    UP.initValues();
+	UP.initURLParams();
+	$('.lesson').remove();
+	var monday = UP.currentMonday.ISOFormat();
+	UP.showDays();
+	if (monday in UP.events) {
+		UP.events[monday].forEach(UP.showLesson);
+	}
+};
+
 
 UP.showDateFile = function(text, status, xhr) {
     var d = new Date(xhr.getResponseHeader('Last-Modified'));
@@ -142,6 +161,7 @@ UP.dateFile = function() {
 
 UP.initCells();
 UP.initDays();
+UP.initValues();
 UP.initURLParams();
 UP.parse();
 UP.dateFile();

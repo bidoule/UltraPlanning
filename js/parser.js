@@ -102,10 +102,9 @@ UP.Event = function(group, row, day) {
 	this.title = row[0];
 	this.type = row[4];
 	this.group = UP.parseGroup(group);
-	this.room = row[6];
+	this.rooms = row[6].split(', ');
 	this.memo = row[7];
 	this.teachers = row[8].split(', ').map(UP.slice_after_space);
-	this.teacher = this.teachers.join('<br>');
 	
 	var position = UP.groupConfig[group];
 	this.classes = position[2];
@@ -121,12 +120,21 @@ UP.Event = function(group, row, day) {
 	this.left = start.minutes * 100 / 60;
 	this.width = (60*(end.hours - start.hours) + (end.minutes - start.minutes))*100./60.;
 	
+	this.cell = null;
+	
+	this.isShown = function() {
+		return UP.courseFilter.test(this.title) 
+			&& this.teachers.some(function(x) { return UP.teacherFilter.test(x); })
+			&& this.rooms.some(function(x) { return UP.roomFilter.test(x); })
+		    && (UP.classes == 'all' || UP.classes == this.classes);
+	}
+	
 	this.show = function () {
-		if (UP.courseFilter.test(this.title) 
-			&& UP.teacherFilter.test(this.teachers) 
-			&& UP.roomFilter.test(this.room)
-		    && (UP.classes == 'all' || UP.classes == this.classes))
-			this.targetCell.append(Mustache.render(UP.$template, this));
+		if (this.isShown()) {
+			if (this.cell == null)
+				this.cell = Mustache.render(UP.$template, this);
+			this.targetCell.append(this.cell);
+		}
 	};
 }
 

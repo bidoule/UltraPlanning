@@ -6,6 +6,23 @@ body {
   padding: 0.5cm;
 }
 
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.comma-list li {
+	display: inline-block;
+}
+ul.comma-list li:last-child:after {
+	content: "";
+}
+ul.comma-list li:after {
+	content: ", ";
+}
+
+
 table {
   width: 100%;
   min-width: 1000px;
@@ -87,6 +104,10 @@ th.day {
   border-color: #6F6F6F;
   font-size: 11pt;
   overflow: hidden;
+}
+
+.lesson:hover {
+	z-index: 1000;
 }
 
 .CM {

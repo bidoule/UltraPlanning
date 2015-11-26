@@ -164,12 +164,21 @@
 <script id="lessonTemplate" type="x-tmpl-mustache">
 <div class="lesson {{ type }} t{{ top}} h{{ height }}" style="left: {{ left}}%; width: {{ width }}%;">
     <div style="display: inline-block; float: right; text-align: right;">
-        <div class="room">{{ room }}</div>
+        <ul class="comma-list">
+			{{#rooms}}
+				<li class="room">{{.}}</li>
+			{{/rooms}}
+		</ul>
         <div>{{ group }}</div>
+		<div>{{ memo }}</div>
     </div>
     <div style="display: inline-block; float: left;">
         <div class="course">{{ title }}</div>
-        <div class="teacher">{{{ teacher }}}</div>
+		<ul>
+			{{#teachers}}
+				<li class="teacher">{{.}}</li>
+			{{/teachers}}
+		</ul>
     </div>
 </div>
 </script>
